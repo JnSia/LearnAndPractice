@@ -1,5 +1,6 @@
 import * as Location from 'expo-location';
 import { StatusBar } from 'expo-status-bar';
+import { Fontisto } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import {
   StyleSheet,
@@ -15,6 +16,11 @@ import {
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const API_KEY = 'a85b8df7b31fc1e71ed3e2d844c378da';
+
+const icons = {
+  Clouds: 'cloudy',
+  'clear sky': 'day-sunny',
+};
 
 export default function App() {
   const [region, setRegion] = useState('Loading...');
@@ -55,8 +61,8 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.city}>
-        <Text style={{ fontSize: 36, fontWeight: 'bold' }}>{region}</Text>
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{street}</Text>
+        <Text style={{ fontSize: 36, fontWeight: 'bold', color: 'white' }}>{region}</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white' }}>{street}</Text>
       </View>
       <ScrollView
         horizontal
@@ -70,9 +76,18 @@ export default function App() {
           </View>
         ) : (
           days.map((day, index) => (
-            <View key={index} style={styles.day}>
+            <View key={index} style={{ ...styles.day, alignItems: 'flex-start' }}>
               <Text style={styles.desc}>{day.dt_txt}</Text>
-              <Text style={styles.temp}>{parseFloat(day.main.temp).toFixed(1)}</Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Text style={styles.temp}>{parseFloat(day.main.temp).toFixed(1)}</Text>
+                <Fontisto name={icons[day.weather[0].description]} size={54} color="white" />
+              </View>
               <Text style={styles.desc}>{day.weather[0].description}</Text>
             </View>
           ))
@@ -105,9 +120,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: SCREEN_WIDTH,
     alignItems: 'center',
+    padding: 40,
     // justifyContent: 'center',
     // backgroundColor: 'green',
   },
-  temp: { fontSize: 75, fontWeight: 'bold' },
-  desc: { fontSize: 25, fontWeight: 'bold' },
+  temp: { fontSize: 75, fontWeight: 'bold', color: 'white' },
+  desc: { fontSize: 25, fontWeight: 'bold', color: 'white' },
 });
