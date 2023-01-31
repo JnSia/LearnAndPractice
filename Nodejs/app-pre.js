@@ -8,8 +8,11 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const multer = require('multer');
 
-const indexRouter = require('./routes');
-const userRouter = require('./routes/user');
+const indexRouter = require('./MySQL/routes');
+const userRouter = require('./MySQL/routes/users');
+
+const { connect } = require('./schemas/index');
+const { sequelize } = require('./MySQL/routes');
 
 const app = express();
 
@@ -28,6 +31,9 @@ sequelize
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 // Pug 템플릿 엔진 설정
+
+// connect()
+// mongoDB 연결
 
 // middleware의 특성
 //      req, res, next를 매개변수로 가지는 함수
